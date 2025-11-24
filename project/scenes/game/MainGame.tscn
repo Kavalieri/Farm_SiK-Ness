@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ui_settings_modal" path="res://scenes/ui/modals/SettingsModal.tscn" id="7_settings"]
 [ext_resource type="Script" path="res://scripts/core/CameraController.gd" id="6_camera"]
 [ext_resource type="Texture2D" path="res://assets/background/horizontal-green-background.png" id="8_bg"]
+[ext_resource type="Script" path="res://scripts/game/ParallaxController.gd" id="9_parallax"]
 
 [node name="MainGame" type="Node2D"]
 script = ExtResource("1_script")
@@ -17,7 +18,7 @@ scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.5, 0.5)
-motion_mirroring = Vector2(1920, 1080)
+script = ExtResource("9_parallax")
 
 [node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 texture = ExtResource("8_bg")
