@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://hud_main_scene"]
+[gd_scene load_steps=4 format=3 uid="uid://hud_main_scene"]
 
 [ext_resource type="Theme" uid="uid://theme_main_base" path="res://resources/themes/main_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://scripts/ui/screens/MainHUD.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://ui_resource_display" path="res://scenes/ui/components/ResourceDisplay.tscn" id="3_resource_display"]
 
 [node name="MainHUD" type="Control"]
 layout_mode = 3
@@ -11,6 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("1_theme")
+script = ExtResource("2_script")
 
 [node name="TopBar" type="Panel" parent="."]
 layout_mode = 1
@@ -19,15 +22,55 @@ anchor_right = 1.0
 offset_bottom = 60.0
 grow_horizontal = 2
 
-[node name="MoneyLabel" type="Label" parent="TopBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="MoneyDisplay" parent="TopBar/HBoxContainer" instance=ExtResource("3_resource_display")]
+unique_name_in_owner = true
+layout_mode = 2
+label_text = "$ 0"
+
+[node name="VSeparator" type="VSeparator" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="XPDisplay" parent="TopBar/HBoxContainer" instance=ExtResource("3_resource_display")]
+unique_name_in_owner = true
+layout_mode = 2
+label_text = "XP 0"
+
+[node name="BottomBar" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BottomBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="MarketButton" type="Button" parent="BottomBar/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "MARKET"
+
+
 offset_right = 20.0
 offset_bottom = 11.5
 grow_horizontal = 2

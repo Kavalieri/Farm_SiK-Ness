@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://ui_resource_display"]
+
+[ext_resource type="Script" path="res://scripts/ui/components/ResourceDisplay.gd" id="1_script"]
+
+[node name="ResourceDisplay" type="HBoxContainer"]
+offset_right = 100.0
+offset_bottom = 40.0
+script = ExtResource("1_script")
+
+[node name="IconRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 5
+
+[node name="ValueLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+vertical_alignment = 1
