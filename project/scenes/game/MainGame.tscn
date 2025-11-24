@@ -1,15 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://game_main_scene"]
+[gd_scene load_steps=5 format=3 uid="uid://game_main_scene"]
 
-[ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/screens/MainHUD.tscn" id="1_hud"]
-[ext_resource type="PackedScene" uid="uid://game_grid_manager" path="res://scenes/game/GridManager.tscn" id="2_grid_manager"]
+[ext_resource type="Script" path="res://scripts/game/MainGame.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/screens/MainHUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" uid="uid://game_grid_manager" path="res://scenes/game/GridManager.tscn" id="3_grid_manager"]
+[ext_resource type="PackedScene" uid="uid://ui_market_modal" path="res://scenes/ui/modals/MarketModal.tscn" id="4_market"]
 
 [node name="MainGame" type="Node2D"]
+script = ExtResource("1_script")
 
-[node name="GridManager" parent="." instance=ExtResource("2_grid_manager")]
+[node name="GridManager" parent="." instance=ExtResource("3_grid_manager")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(640, 360)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="MainHUD" parent="CanvasLayer" instance=ExtResource("1_hud")]
+[node name="MainHUD" parent="CanvasLayer" instance=ExtResource("2_hud")]
+
+[node name="MarketModal" parent="CanvasLayer" instance=ExtResource("4_market")]
+visible = false

@@ -3,6 +3,7 @@ extends Node
 signal money_changed(new_amount)
 signal xp_changed(new_amount)
 signal level_changed(new_level)
+signal inventory_changed(new_inventory)
 
 var money: float = 0.0:
 	set(value):
@@ -19,6 +20,8 @@ var level: int = 1:
 		level = value
 		level_changed.emit(level)
 
+var inventory: Array[BuildingData] = []
+
 func add_money(amount: float) -> void:
 	money += amount
 	print("Money added: ", amount, " | Total: ", money)
@@ -28,6 +31,18 @@ func spend_money(amount: float) -> bool:
 		money -= amount
 		return true
 	return false
+
+func add_building_to_inventory(building: BuildingData) -> void:
+	inventory.append(building)
+	inventory_changed.emit(inventory)
+	print("Added to inventory: ", building.name)
+
+func remove_building_from_inventory(index: int) -> BuildingData:
+	if index >= 0 and index < inventory.size():
+		var building = inventory.pop_at(index)
+		inventory_changed.emit(inventory)
+		return building
+	return null
 
 func _ready():
 	print("GameManager Initialized")

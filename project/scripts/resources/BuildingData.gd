@@ -14,6 +14,8 @@ extends Resource
 @export_group("Economy")
 @export var base_production: float = 1.0
 @export var cost: int = 100
+@export_enum("Common", "Uncommon", "Rare", "Legendary") var rarity: int = 0
+@export var spawn_weight: float = 1.0
 
 @export_group("Synergies")
 ## Tags that this building provides (e.g. "water", "crop")
