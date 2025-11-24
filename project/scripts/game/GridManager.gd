@@ -98,6 +98,36 @@ func _initialize_grid() -> void:
 func world_to_grid(world_pos: Vector2) -> Vector2i:
 	return Vector2i(world_pos / Vector2(cell_size))
 
+func get_neighbors(grid_pos: Vector2i, shape: Array[Vector2i]) -> Array[BuildingEntity]:
+	var neighbors: Array[BuildingEntity] = []
+	var checked_ids: Dictionary = {} # To avoid duplicates
+	
+	# Directions: Up, Down, Left, Right
+	var directions = [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]
+	
+	for cell in shape:
+		var cell_world_pos = grid_pos + cell
+		
+		for dir in directions:
+			var neighbor_pos = cell_world_pos + dir
+			
+			# Skip if this neighbor pos is part of the building itself
+			var is_self = false
+			for self_cell in shape:
+				if (grid_pos + self_cell) == neighbor_pos:
+					is_self = true
+					break
+			if is_self:
+				continue
+				
+			if _grid_state.has(neighbor_pos):
+				var neighbor = _grid_state[neighbor_pos]
+				if neighbor and not checked_ids.has(neighbor.get_instance_id()):
+					neighbors.append(neighbor)
+					checked_ids[neighbor.get_instance_id()] = true
+					
+	return neighbors
+
 func grid_to_world(grid_pos: Vector2i) -> Vector2:
 	return Vector2(grid_pos * cell_size)
 
@@ -125,6 +155,20 @@ func place_building(scene: PackedScene, grid_pos: Vector2i, data: BuildingData) 
 		_grid_state[pos] = building
 	
 	building_placed.emit(data, grid_pos)
+	
+	# Update synergies
+	var neighbors = get_neighbors(grid_pos, data.shape_pattern)
+	
+	# Update self
+	building.update_synergies(neighbors)
+	
+	# Update neighbors
+	for neighbor in neighbors:
+		if neighbor and neighbor.data:
+			var neighbor_grid_pos = world_to_grid(neighbor.position)
+			var neighbor_neighbors = get_neighbors(neighbor_grid_pos, neighbor.data.shape_pattern)
+			neighbor.update_synergies(neighbor_neighbors)
+	
 	# GameManager.request_save() # Removed to avoid save loop during load and double save on placement
 
 func _draw() -> void:

@@ -4,12 +4,14 @@ extends Node2D
 const OUTLINE_SHADER = preload("res://resources/shaders/outline.gdshader")
 
 var data: BuildingData
+var current_production: float = 0.0
 
 @onready var sprite_2d: Sprite2D = %Sprite2D
 @onready var production_timer: Timer = %ProductionTimer
 
 func setup(building_data: BuildingData, cell_size: Vector2i) -> void:
 	data = building_data
+	current_production = data.base_production
 	
 	# Setup production
 	if data.base_production > 0:
@@ -110,7 +112,22 @@ func setup(building_data: BuildingData, cell_size: Vector2i) -> void:
 				min_y * cell_size.y + offset_y
 			)
 
+func update_synergies(neighbors: Array[BuildingEntity]) -> void:
+	if not data: return
+	
+	var bonus_add = 0.0
+	
+	for neighbor in neighbors:
+		if not neighbor.data: continue
+		
+		for tag in neighbor.data.tags:
+			if data.synergy_rules.has(tag):
+				bonus_add += data.base_production * data.synergy_rules[tag]
+				
+	current_production = data.base_production + bonus_add
+	# print("Updated production for ", data.name, ": ", current_production)
+
 func _on_production_timer_timeout() -> void:
 	if data:
-		GameManager.add_money(data.base_production)
+		GameManager.add_money(current_production)
 		# TODO: Add visual feedback (floating text)

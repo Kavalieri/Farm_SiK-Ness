@@ -15,5 +15,6 @@ cost = 150
 rarity = 1
 spawn_weight = 0.8
 tags = Array[String](["water"])
-synergy_required_tags = Array[String]([])
-synergy_bonus_multiplier = 0.0
+synergy_rules = {
+"crop": 0.2
+}

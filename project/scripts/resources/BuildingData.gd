@@ -18,8 +18,8 @@ extends Resource
 @export var spawn_weight: float = 1.0
 
 @export_group("Synergies")
-## Tags that this building provides (e.g. "water", "crop")
-@export var tags: Array[String]
-## Tags that increase this building's production
-@export var synergy_required_tags: Array[String]
-@export var synergy_bonus_multiplier: float = 0.1
+## Tags that identify this building (e.g., "crop", "water", "industrial")
+@export var tags: Array[String] = []
+## Dictionary mapping tag names to production multipliers.
+## Example: {"water": 0.5} adds 50% base production per neighbor.
+@export var synergy_rules: Dictionary = {}

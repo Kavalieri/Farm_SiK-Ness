@@ -15,5 +15,6 @@ cost = 200
 rarity = 1
 spawn_weight = 0.6
 tags = Array[String](["storage"])
-synergy_required_tags = Array[String](["crop"])
-synergy_bonus_multiplier = 0.2
+synergy_rules = {
+"crop": 0.1
+}

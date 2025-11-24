@@ -1,14 +1,13 @@
 extends SceneTree
 
 func _init():
-	var img = Image.load_from_file("res://assets/tiles/1x1-tile.png")
-	if img:
-		print("1x1-tile.png size: ", img.get_size())
-	else:
-		print("Failed to load 1x1-tile.png")
+	var args = OS.get_cmdline_args()
+	var path = "res://assets/background/horizontal-green-background.png"
 	
-	img = Image.load_from_file("res://assets/background/vertical.png")
+	var img = Image.load_from_file(path)
 	if img:
-		print("vertical.png size: ", img.get_size())
+		print("Image size: ", img.get_size())
+	else:
+		print("Failed to load image at: ", path)
 	
 	quit()
