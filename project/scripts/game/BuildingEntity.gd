@@ -4,9 +4,16 @@ extends Node2D
 var data: BuildingData
 
 @onready var sprite_2d: Sprite2D = %Sprite2D
+@onready var production_timer: Timer = %ProductionTimer
 
 func setup(building_data: BuildingData, cell_size: Vector2i) -> void:
 	data = building_data
+	
+	# Setup production
+	if data.base_production > 0:
+		production_timer.wait_time = 1.0 # Default 1 second for now
+		production_timer.timeout.connect(_on_production_timer_timeout)
+		production_timer.start()
 	
 	if data.texture:
 		sprite_2d.texture = data.texture
@@ -42,3 +49,8 @@ func setup(building_data: BuildingData, cell_size: Vector2i) -> void:
 			target_width / texture_size.x,
 			target_height / texture_size.y
 		)
+
+func _on_production_timer_timeout() -> void:
+	if data:
+		GameManager.add_money(data.base_production)
+		# TODO: Add visual feedback (floating text)

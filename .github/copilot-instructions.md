@@ -43,4 +43,6 @@ Before starting any implementation, you MUST create a GitHub Issue with the foll
 
 ## 5. MCP Usage
 -   Use `mcp_github_*` tools to manage issues and PRs.
+-   Use `mcp_git_*` tools for committing changes with proper messages.
+-   Use `mcp_gitkraken_*` tools for visual Git operations if needed.
 -   Use `mcp_godot_*` tools (if available) or file operations to manage Godot assets.

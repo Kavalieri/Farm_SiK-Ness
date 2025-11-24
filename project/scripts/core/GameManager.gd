@@ -19,6 +19,16 @@ var level: int = 1:
 		level = value
 		level_changed.emit(level)
 
+func add_money(amount: float) -> void:
+	money += amount
+	print("Money added: ", amount, " | Total: ", money)
+
+func spend_money(amount: float) -> bool:
+	if money >= amount:
+		money -= amount
+		return true
+	return false
+
 func _ready():
 	print("GameManager Initialized")
 	# TODO: Connect to SaveManager to load data on start
