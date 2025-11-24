@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ui_main_menu"]
 
 [ext_resource type="Theme" uid="uid://theme_main_base" path="res://resources/themes/main_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://scripts/ui/screens/MainMenu.gd" id="2_script"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -10,6 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_theme")
+script = ExtResource("2_script")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -19,27 +21,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+[node name="MenuContainer" type="VBoxContainer" parent="CenterContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="CenterContainer/MenuContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Farm SiK-Ness"
 horizontal_alignment = 1
 
-[node name="PlayButton" type="Button" parent="VBoxContainer"]
+[node name="PlayButton" type="Button" parent="CenterContainer/MenuContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 text = "JUGAR"
 
-[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+[node name="SettingsButton" type="Button" parent="CenterContainer/MenuContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 text = "OPCIONES"
 
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
+[node name="QuitButton" type="Button" parent="CenterContainer/MenuContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 text = "SALIR"

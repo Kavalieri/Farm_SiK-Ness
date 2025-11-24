@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://ui_settings_modal"]
+[gd_scene load_steps=3 format=3 uid="uid://ui_settings_modal"]
 
 [ext_resource type="Theme" uid="uid://theme_main_base" path="res://resources/themes/main_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://scripts/ui/modals/SettingsModal.gd" id="2_script"]
 
 [node name="SettingsModal" type="PanelContainer"]
 anchors_preset = 8
@@ -9,12 +10,13 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -200.0
-offset_top = -150.0
+offset_top = -200.0
 offset_right = 200.0
-offset_bottom = 150.0
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_theme")
+script = ExtResource("2_script")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -40,7 +42,55 @@ value = 80.0
 layout_mode = 2
 text = "Modo Debug"
 
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SaveLoadLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Gestión de Partida"
+horizontal_alignment = 1
+
+[node name="SlotContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/SlotContainer"]
+layout_mode = 2
+text = "Slot: "
+
+[node name="SlotSelector" type="OptionButton" parent="VBoxContainer/SlotContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ActionsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/ActionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "GUARDAR"
+
+[node name="LoadButton" type="Button" parent="VBoxContainer/ActionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CARGAR"
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
 text = "Cerrar"

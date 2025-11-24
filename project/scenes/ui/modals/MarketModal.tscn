@@ -30,6 +30,11 @@ size_flags_horizontal = 3
 text = "Market Draft"
 horizontal_alignment = 1
 
+[node name="RollsLabel" type="Label" parent="VBoxContainer/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Rolls: 10/10"
+
 [node name="CloseButton" type="Button" parent="VBoxContainer/Header"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -41,4 +46,15 @@ layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
+[node name="Footer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="RerollButton" type="Button" parent="VBoxContainer/Footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "REROLL (1 Roll)"
+
 [connection signal="pressed" from="VBoxContainer/Header/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Footer/RerollButton" to="." method="_on_reroll_button_pressed"]

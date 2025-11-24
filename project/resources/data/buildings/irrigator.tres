@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/BuildingData.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/pieces/1x2-irrigator.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+id = "irrigator"
+name = "Irrigator"
+description = "Provides water to adjacent crops."
+texture = ExtResource("2_icon")
+shape_pattern = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0)])
+base_production = 2.0
+cost = 150
+rarity = 1
+spawn_weight = 0.8
+tags = Array[String](["water"])
+synergy_required_tags = Array[String]([])
+synergy_bonus_multiplier = 0.0

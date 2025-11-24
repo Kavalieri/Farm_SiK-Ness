@@ -5,14 +5,28 @@
 [ext_resource type="PackedScene" uid="uid://game_grid_manager" path="res://scenes/game/GridManager.tscn" id="3_grid_manager"]
 [ext_resource type="PackedScene" uid="uid://ui_market_modal" path="res://scenes/ui/modals/MarketModal.tscn" id="4_market"]
 [ext_resource type="PackedScene" uid="uid://ui_inventory_panel" path="res://scenes/ui/modals/InventoryPanel.tscn" id="5_inventory"]
+[ext_resource type="PackedScene" uid="uid://ui_settings_modal" path="res://scenes/ui/modals/SettingsModal.tscn" id="7_settings"]
+[ext_resource type="Script" path="res://scripts/core/CameraController.gd" id="6_camera"]
+[ext_resource type="Texture2D" path="res://assets/background/horizontal-green-background.png" id="8_bg"]
 
 [node name="MainGame" type="Node2D"]
 script = ExtResource("1_script")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource("8_bg")
+centered = false
 
 [node name="GridManager" parent="." instance=ExtResource("3_grid_manager")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(640, 360)
+script = ExtResource("6_camera")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -23,4 +37,6 @@ visible = false
 
 [node name="InventoryPanel" parent="CanvasLayer" instance=ExtResource("5_inventory")]
 visible = false
+
+[node name="SettingsModal" parent="CanvasLayer" instance=ExtResource("7_settings")]
 visible = false
