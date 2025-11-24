@@ -20,13 +20,23 @@ Before starting any implementation, you MUST create a GitHub Issue with the foll
 
 ## 3. Tech Stack & Conventions
 -   **Engine:** Godot 4.5.1 (Compatibility Mode).
--   **Language:** GDScript (Static typing preferred: `var x: int = 0`).
+-   **Language:** GDScript (Static typing **MANDATORY**: `var x: int = 0`).
+-   **Naming Conventions:**
+    -   **Files/Folders:** `snake_case` (e.g., `player_controller.gd`, `main_menu.tscn`).
+    -   **Classes/Nodes:** `PascalCase` (e.g., `class_name BuildingData`, `Node2D`).
+    -   **Variables/Functions:** `snake_case` (e.g., `func calculate_total()`, `var current_speed`).
+    -   **Constants:** `SCREAMING_SNAKE_CASE` (e.g., `const MAX_SPEED = 100`).
 -   **Architecture:**
-    -   **Managers (Singletons):** For global state (GameManager, SaveManager).
-    -   **Resources (.tres):** For data definitions (BuildingData).
+    -   **Managers (Singletons):** For global state ONLY (GameManager, SaveManager).
+    -   **Resources (.tres):** For ALL static data (BuildingData, ItemData).
     -   **Composition:** Prefer small, reusable components over deep inheritance.
--   **Style:** Snake_case for variables/functions, PascalCase for Classes/Nodes.
 
-## 4. MCP Usage
+## 4. Agent Behavior & Rules
+-   **NO Condescension:** Be direct, professional, and concise. Do not over-explain simple concepts.
+-   **Reuse First:** Before creating ANY new script or scene, CHECK if an existing one can be reused or extended.
+-   **Directory Hygiene:** NEVER create files in the root directory. Use `project/` for code/assets and `docs/` for documentation.
+-   **No Hallucinations:** If a tool fails, admit it. Do not invent file paths or API responses.
+
+## 5. MCP Usage
 -   Use `mcp_github_*` tools to manage issues and PRs.
 -   Use `mcp_godot_*` tools (if available) or file operations to manage Godot assets.
