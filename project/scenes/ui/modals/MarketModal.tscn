@@ -42,22 +42,3 @@ size_flags_vertical = 3
 alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/Header/CloseButton" to="." method="_on_close_button_pressed"]
-theme_override_constants/separation = 20
-
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "MERCADO DE CONTRATOS"
-horizontal_alignment = 1
-
-[node name="CardsContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="RefreshButton" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(200, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Refrescar Ofertas ($ 100)"

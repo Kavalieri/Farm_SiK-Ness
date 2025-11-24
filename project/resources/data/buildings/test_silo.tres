@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3 uid="uid://test_building_data"]
 
 [ext_resource type="Script" path="res://scripts/resources/BuildingData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b4d4d4d4d4d4" path="res://icon.svg" id="2_icon"]
+[ext_resource type="Texture2D" uid="uid://ciikir08p0dvo" path="res://icon.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_script")
