@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://game_grid_manager"]
+
+[node name="GridManager" type="Node2D"]
+
+[node name="GroundLayer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="BuildingsContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="GhostContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.5)
+z_index = 10

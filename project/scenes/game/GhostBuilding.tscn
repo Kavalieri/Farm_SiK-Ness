@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://game_ghost_building"]
+
+[node name="GhostBuilding" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+centered = false
+modulate = Color(0.4, 1, 0.4, 0.8)
+
+[node name="InvalidIndicator" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+color = Color(1, 0, 0, 0.5)
