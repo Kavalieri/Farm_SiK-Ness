@@ -70,6 +70,12 @@ custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "MARKET"
 
+[node name="InventoryButton" type="Button" parent="BottomBar/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "INVENTORY"
+
 
 offset_right = 20.0
 offset_bottom = 11.5
