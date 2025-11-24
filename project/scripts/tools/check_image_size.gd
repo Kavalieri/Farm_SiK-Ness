@@ -1,8 +1,7 @@
 extends SceneTree
 
 func _init():
-	var args = OS.get_cmdline_args()
-	var path = "res://assets/background/horizontal-green-background.png"
+	var path = "res://assets/pieces/plus/shiping.png"
 	
 	var img = Image.load_from_file(path)
 	if img:

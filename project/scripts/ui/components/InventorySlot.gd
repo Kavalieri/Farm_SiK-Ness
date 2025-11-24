@@ -1,19 +1,21 @@
 class_name InventorySlot
 extends Button
 
-signal slot_selected(building_data: BuildingData)
-signal context_menu_requested(building_data: BuildingData, global_pos: Vector2)
+signal slot_selected(building_instance: BuildingInstance)
+signal context_menu_requested(building_instance: BuildingInstance, global_pos: Vector2)
 
-var building_data: BuildingData
+var building_instance: BuildingInstance
 
 @onready var shape_display: Control = %ShapeDisplay
 @onready var name_label: Label = %NameLabel
 @onready var level_label: Label = %LevelLabel
 
-func setup(data: BuildingData) -> void:
-	building_data = data
+func setup(instance: BuildingInstance) -> void:
+	building_instance = instance
+	var data = instance.data
+	
 	name_label.text = data.name
-	level_label.text = "Lvl 1" # Placeholder for now
+	level_label.text = "Lvl %d" % instance.level
 	
 	# Standardize size
 	custom_minimum_size = Vector2(100, 120)
@@ -37,10 +39,15 @@ func setup(data: BuildingData) -> void:
 	
 	_render_shape()
 	
-	tooltip_text = "%s\nProduction: %.1f/s\nRarity: %s" % [
+	var rarity_names = ["Common", "Uncommon", "Rare", "Legendary"]
+	var rarity_str = rarity_names[data.rarity] if data.rarity >= 0 and data.rarity < rarity_names.size() else "Unknown"
+	
+	tooltip_text = "%s\n%s\n\nProduction: %.1f/s\nRarity: %s\n\n%s" % [
 		data.name,
-		data.base_production,
-		"Common" # Placeholder
+		data.description,
+		data.get_production_at_level(instance.level),
+		rarity_str,
+		data.flavor_text
 	]
 
 	# Defer rendering to ensure size is calculated
@@ -54,8 +61,10 @@ func _render_shape() -> void:
 	for child in shape_display.get_children():
 		child.queue_free()
 	
-	if not building_data or building_data.shape_pattern.is_empty():
+	if not building_instance or not building_instance.data or building_instance.data.shape_pattern.is_empty():
 		return
+		
+	var data = building_instance.data
 		
 	# Calculate bounds
 	var min_x = 999
@@ -63,7 +72,7 @@ func _render_shape() -> void:
 	var min_y = 999
 	var max_y = -999
 	
-	for pos in building_data.shape_pattern:
+	for pos in data.shape_pattern:
 		min_x = min(min_x, pos.x)
 		max_x = max(max_x, pos.x)
 		min_y = min(min_y, pos.y)
@@ -92,7 +101,7 @@ func _render_shape() -> void:
 	
 	# Draw background grid cells (footprint)
 	var tile_texture = load("res://assets/tiles/1x1-tile.png")
-	for pos in building_data.shape_pattern:
+	for pos in data.shape_pattern:
 		var bg_rect = TextureRect.new()
 		shape_display.add_child(bg_rect)
 		bg_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -116,24 +125,24 @@ func _render_shape() -> void:
 		bg_rect.position = start_offset + Vector2(rel_x * cell_size, rel_y * cell_size)
 
 	# Draw texture on top
-	if building_data.texture:
+	if data.texture:
 		var texture_rect = TextureRect.new()
 		shape_display.add_child(texture_rect)
 		texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		texture_rect.texture = building_data.texture
+		texture_rect.texture = data.texture
 		
 		texture_rect.size = Vector2(total_width, total_height)
 		texture_rect.position = start_offset
 
 func _on_pressed() -> void:
-	if building_data:
-		slot_selected.emit(building_data)
+	if building_instance:
+		slot_selected.emit(building_instance)
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
-			if building_data:
-				context_menu_requested.emit(building_data, get_global_mouse_position())
+			if building_instance:
+				context_menu_requested.emit(building_instance, get_global_mouse_position())
 

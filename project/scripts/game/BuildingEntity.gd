@@ -5,13 +5,14 @@ const OUTLINE_SHADER = preload("res://resources/shaders/outline.gdshader")
 
 var data: BuildingData
 var current_production: float = 0.0
+var level: int = 1
 
 @onready var sprite_2d: Sprite2D = %Sprite2D
 @onready var production_timer: Timer = %ProductionTimer
 
 func setup(building_data: BuildingData, cell_size: Vector2i) -> void:
 	data = building_data
-	current_production = data.base_production
+	_update_production_stats()
 	
 	# Setup production
 	if data.base_production > 0:
@@ -115,6 +116,7 @@ func setup(building_data: BuildingData, cell_size: Vector2i) -> void:
 func update_synergies(neighbors: Array[BuildingEntity]) -> void:
 	if not data: return
 	
+	var base_prod = data.get_production_at_level(level)
 	var bonus_add = 0.0
 	
 	for neighbor in neighbors:
@@ -122,12 +124,28 @@ func update_synergies(neighbors: Array[BuildingEntity]) -> void:
 		
 		for tag in neighbor.data.tags:
 			if data.synergy_rules.has(tag):
-				bonus_add += data.base_production * data.synergy_rules[tag]
+				bonus_add += base_prod * data.synergy_rules[tag]
 				
-	current_production = data.base_production + bonus_add
+	current_production = base_prod + bonus_add
 	# print("Updated production for ", data.name, ": ", current_production)
 
 func _on_production_timer_timeout() -> void:
-	if data:
+	# Check tags for production type
+	if "crop" in data.tags:
+		GameManager.add_products(current_production)
+		# Visual feedback could go here
+	else:
+		# Default money production (legacy or specific buildings)
 		GameManager.add_money(current_production)
-		# TODO: Add visual feedback (floating text)
+
+func upgrade() -> void:
+	if level < data.max_level:
+		level += 1
+		_update_production_stats()
+		# TODO: Play upgrade effect
+
+func _update_production_stats() -> void:
+	if data:
+		current_production = data.get_production_at_level(level)
+		# Re-apply synergies if needed, but they are usually applied by GridManager
+		# We might need to request a synergy update from GridManager or store neighbors

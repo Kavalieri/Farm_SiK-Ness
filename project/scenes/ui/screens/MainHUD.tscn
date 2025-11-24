@@ -45,6 +45,15 @@ unique_name_in_owner = true
 layout_mode = 2
 label_text = "XP 0"
 
+[node name="VSeparator2" type="VSeparator" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ProductsDisplay" parent="TopBar/HBoxContainer" instance=ExtResource("3_resource_display")]
+unique_name_in_owner = true
+layout_mode = 2
+label_text = "PROD 0/100"
+
 [node name="Spacer" type="Control" parent="TopBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3

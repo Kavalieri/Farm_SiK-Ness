@@ -2,7 +2,7 @@ class_name InventoryPanel
 extends PanelContainer
 
 var slot_scene = preload("res://scenes/ui/components/InventorySlot.tscn")
-var _selected_building_for_menu: BuildingData
+var _selected_building_for_menu: BuildingInstance
 
 @onready var grid_container: GridContainer = %GridContainer
 @onready var close_button: Button = %CloseButton
@@ -44,10 +44,10 @@ func _on_inventory_changed(_new_inventory: Array) -> void:
 	if visible:
 		_refresh_inventory()
 
-func _on_slot_selected(building_data: BuildingData) -> void:
+func _on_slot_selected(building_instance: BuildingInstance) -> void:
 	# Select for placement
-	GameManager.placing_building = building_data
-	print("Selected from inventory: ", building_data.name)
+	GameManager.placing_building = building_instance
+	print("Selected from inventory: ", building_instance.data.name)
 	close()
 
 func _on_slot_context_menu(building_data: BuildingData, pos: Vector2) -> void:

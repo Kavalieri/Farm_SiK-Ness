@@ -2,6 +2,7 @@ class_name GridManager
 extends Node2D
 
 signal building_placed(building_data: Resource, grid_pos: Vector2i)
+signal building_selected(building_entity: Node2D)
 
 @export_group("Grid Settings")
 @export var cell_size: Vector2i = Vector2i(64, 64)
@@ -17,6 +18,7 @@ var _click_start_pos: Vector2
 
 var ghost_building: Node2D
 var ghost_scene = preload("res://scenes/game/GhostBuilding.tscn")
+var shipping_bin_scene = preload("res://scenes/game/ShippingBin.tscn")
 
 @onready var ground_layer: TileMapLayer = %GroundLayer
 @onready var buildings_container: Node2D = %BuildingsContainer
@@ -43,19 +45,21 @@ func _update_ghost() -> void:
 			ghost_building = null
 		return
 
+	var data = GameManager.placing_building.data
+
 	if not ghost_building:
 		ghost_building = ghost_scene.instantiate()
 		ghost_container.add_child(ghost_building)
-		ghost_building.setup(GameManager.placing_building, cell_size)
-	elif ghost_building.data != GameManager.placing_building:
+		ghost_building.setup(data, cell_size)
+	elif ghost_building.data != data:
 		# Update existing ghost with new data
-		ghost_building.setup(GameManager.placing_building, cell_size)
+		ghost_building.setup(data, cell_size)
 	
 	var mouse_pos = get_global_mouse_position()
 	var grid_pos = world_to_grid(mouse_pos)
 	ghost_building.position = grid_to_world(grid_pos)
 	
-	var is_valid = can_place_building(grid_pos, GameManager.placing_building.shape_pattern)
+	var is_valid = can_place_building(grid_pos, data.shape_pattern)
 	ghost_building.set_valid(is_valid)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -65,25 +69,41 @@ func _unhandled_input(event: InputEvent) -> void:
 				_click_start_pos = event.position
 			else:
 				# On Release
-				if not GameManager.placing_building:
-					return
-				
 				# Check if it was a drag (pan) or a click
 				if event.position.distance_to(_click_start_pos) > 10.0:
-					return # It was a drag, ignore placement
-					
+					return # It was a drag, ignore placement/selection
+				
 				var grid_pos = world_to_grid(get_global_mouse_position())
 				
-				if can_place_building(grid_pos, GameManager.placing_building.shape_pattern):
-					place_building(debug_building_scene, grid_pos, GameManager.placing_building)
+				if GameManager.placing_building:
+					var instance = GameManager.placing_building
+					var data = instance.data
 					
-					# Remove from inventory (find first instance)
-					var idx = GameManager.inventory.find(GameManager.placing_building)
-					if idx != -1:
-						GameManager.remove_building_from_inventory(idx)
-					
-					# Deselect after placement
-					GameManager.placing_building = null
+					# Handle Placement
+					if can_place_building(grid_pos, data.shape_pattern):
+						var scene_to_place = debug_building_scene
+						if data.id == "shipping_bin":
+							scene_to_place = shipping_bin_scene
+							
+						place_building(scene_to_place, grid_pos, instance)
+						
+						# Remove from inventory (find first instance)
+						var idx = GameManager.inventory.find(instance)
+						if idx != -1:
+							GameManager.remove_building_from_inventory(idx)
+						
+						# Deselect after placement
+						GameManager.placing_building = null
+				else:
+					# Handle Selection
+					if is_valid_grid_pos(grid_pos) and _grid_state.has(grid_pos):
+						var building = _grid_state[grid_pos]
+						if building:
+							building_selected.emit(building)
+							print("Selected building: ", building.name)
+					else:
+						# Deselect if clicking empty space?
+						building_selected.emit(null)
 		
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			# Cancel placement
@@ -123,7 +143,8 @@ func get_neighbors(grid_pos: Vector2i, shape: Array[Vector2i]) -> Array[Building
 			if _grid_state.has(neighbor_pos):
 				var neighbor = _grid_state[neighbor_pos]
 				if neighbor and not checked_ids.has(neighbor.get_instance_id()):
-					neighbors.append(neighbor)
+					if neighbor is BuildingEntity:
+						neighbors.append(neighbor)
 					checked_ids[neighbor.get_instance_id()] = true
 					
 	return neighbors
@@ -143,11 +164,32 @@ func can_place_building(grid_pos: Vector2i, shape_pattern: Array) -> bool:
 			return false
 	return true
 
-func place_building(scene: PackedScene, grid_pos: Vector2i, data: BuildingData) -> void:
+func place_building(scene: PackedScene, grid_pos: Vector2i, instance_or_data) -> void:
+	var data: BuildingData
+	var level: int = 1
+	
+	if instance_or_data is BuildingInstance:
+		data = instance_or_data.data
+		level = instance_or_data.level
+	elif instance_or_data is BuildingData:
+		data = instance_or_data
+	else:
+		push_error("Invalid data passed to place_building")
+		return
+
 	var building = scene.instantiate()
 	buildings_container.add_child(building)
 	building.setup(data, cell_size)
 	building.position = grid_to_world(grid_pos)
+	
+	# Set level if supported
+	if "level" in building:
+		building.level = level
+		# If it has update_production or similar, call it?
+		# Usually setup() or _ready() handles init, but level might be set after setup.
+		# If BuildingEntity uses level in _ready, we might need to set it before adding child?
+		# But we added child already.
+		# Let's check BuildingEntity later.
 	
 	# Update grid state
 	for offset in data.shape_pattern:
@@ -216,3 +258,29 @@ func load_save_data(data: Array) -> void:
 					# We use debug_building_scene as the template for now, 
 					# ideally this should be a constant or configurable scene
 					place_building(debug_building_scene, grid_pos, res)
+
+func remove_building(building: Node2D) -> void:
+	if not building or not building is BuildingEntity:
+		return
+		
+	var grid_pos = world_to_grid(building.position)
+	var data = building.data
+	
+	# 1. Identify neighbors before removal (to update them later)
+	var neighbors = get_neighbors(grid_pos, data.shape_pattern)
+	
+	# 2. Remove from grid state
+	for offset in data.shape_pattern:
+		var pos = grid_pos + offset
+		if _grid_state.has(pos) and _grid_state[pos] == building:
+			_grid_state.erase(pos)
+			
+	# 3. Update neighbors (they will now see empty space where this building was)
+	for neighbor in neighbors:
+		if neighbor and neighbor.data:
+			var neighbor_grid_pos = world_to_grid(neighbor.position)
+			var neighbor_neighbors = get_neighbors(neighbor_grid_pos, neighbor.data.shape_pattern)
+			neighbor.update_synergies(neighbor_neighbors)
+			
+	# 4. Remove the node
+	building.queue_free()

@@ -15,3 +15,6 @@ func _ready() -> void:
 func update_value(new_value: float) -> void:
 	# TODO: Add tween animation
 	value_label.text = str(int(new_value))
+
+func update_label(new_text: String) -> void:
+	value_label.text = new_text

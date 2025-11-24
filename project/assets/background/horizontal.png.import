@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5vmm0rod4l0m"
-path="res://.godot/imported/shiping.png-257a0a74558e784647809b6c5243b740.ctex"
+uid="uid://6nxvfypmiedx"
+path="res://.godot/imported/horizontal.png-2101bae6702ed04abc52b5997db46d63.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pieces/plus/shiping.png"
-dest_files=["res://.godot/imported/shiping.png-257a0a74558e784647809b6c5243b740.ctex"]
+source_file="res://assets/background/horizontal.png"
+dest_files=["res://.godot/imported/horizontal.png-2101bae6702ed04abc52b5997db46d63.ctex"]
 
 [params]
 

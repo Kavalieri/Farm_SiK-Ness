@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ui_building_inspector"]
 
 [ext_resource type="Theme" uid="uid://theme_main_base" path="res://resources/themes/main_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://scripts/ui/modals/BuildingInspector.gd" id="2_script"]
 
 [node name="BuildingInspector" type="PanelContainer"]
 anchors_preset = 3
@@ -15,6 +16,7 @@ offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("1_theme")
+script = ExtResource("2_script")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -44,10 +46,60 @@ text = "Nivel 1"
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
 
+[node name="DescriptionLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Description goes here."
+autowrap_mode = 3
+
+[node name="FlavorLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[i]Flavor text...[/i]"
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
 [node name="StatsLabel" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-text = "Producción: 10/s
+bbcode_enabled = true
+text = "Producción: 10/s"
+fit_content = true
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SynergiesLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Sinergias:"
+
+[node name="SynergiesContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ActionsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="UpgradeButton" type="Button" parent="VBoxContainer/ActionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mejorar ($100)"
+
+[node name="ReturnButton" type="Button" parent="VBoxContainer/ActionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Guardar"
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/ActionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cerrar"
+
 Sinergias: Ninguna"
 
 [node name="Actions" type="HBoxContainer" parent="VBoxContainer"]
