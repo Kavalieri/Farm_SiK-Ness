@@ -39,6 +39,9 @@ func generate_cards() -> void:
 
 func _on_card_selected(building_data: BuildingData) -> void:
 	GameManager.add_building_to_inventory(building_data)
+	# Auto-select for placement
+	GameManager.placing_building = building_data
+	print("Selected for placement: ", building_data.name)
 	close()
 
 func _on_close_button_pressed() -> void:

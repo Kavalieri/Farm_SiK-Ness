@@ -30,18 +30,25 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		print("Input received (Unhandled)")
-		if not debug_building_data:
-			push_error("Debug building data is missing!")
+		if not GameManager.placing_building:
+			print("No building selected for placement.")
 			return
 			
 		var grid_pos = world_to_grid(get_global_mouse_position())
 		print("Click at grid: ", grid_pos)
 		
-		if can_place_building(grid_pos, debug_building_data.shape_pattern):
-			print("Attempting to place building...")
-			place_building(debug_building_scene, grid_pos, debug_building_data)
+		if can_place_building(grid_pos, GameManager.placing_building.shape_pattern):
+			print("Attempting to place building: ", GameManager.placing_building.name)
+			place_building(debug_building_scene, grid_pos, GameManager.placing_building)
 			print("Placed building at: ", grid_pos)
+			
+			# Remove from inventory (find first instance)
+			var idx = GameManager.inventory.find(GameManager.placing_building)
+			if idx != -1:
+				GameManager.remove_building_from_inventory(idx)
+			
+			# Deselect after placement
+			GameManager.placing_building = null
 		else:
 			print("Cannot place building at: ", grid_pos)
 

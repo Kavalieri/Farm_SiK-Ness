@@ -21,6 +21,7 @@ var level: int = 1:
 		level_changed.emit(level)
 
 var inventory: Array[BuildingData] = []
+var placing_building: BuildingData = null
 
 func add_money(amount: float) -> void:
 	money += amount
@@ -46,4 +47,6 @@ func remove_building_from_inventory(index: int) -> BuildingData:
 
 func _ready():
 	print("GameManager Initialized")
+	# Initial capital for testing
+	money = 500.0
 	# TODO: Connect to SaveManager to load data on start
