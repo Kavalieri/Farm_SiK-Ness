@@ -30,6 +30,10 @@ Before starting any implementation, you MUST create a GitHub Issue with the foll
     -   **Managers (Singletons):** For global state ONLY (GameManager, SaveManager).
     -   **Resources (.tres):** For ALL static data (BuildingData, ItemData).
     -   **Composition:** Prefer small, reusable components over deep inheritance.
+-   **Modularity & Scenes:**
+    -   **Everything is a Scene:** Do NOT generate complex UI or game objects purely via code. Create `.tscn` files for everything (e.g., `BuildingEntity.tscn`, `InventorySlot.tscn`).
+    -   **Instantiate, Don't Construct:** Use `preload("res://...").instantiate()` instead of `new()`.
+    -   **Exports:** Use `@export` variables to configure instances in the editor, not just in code.
 
 ## 4. Agent Behavior & Rules
 -   **NO Condescension:** Be direct, professional, and concise. Do not over-explain simple concepts.
