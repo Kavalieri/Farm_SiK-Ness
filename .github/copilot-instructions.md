@@ -42,7 +42,12 @@ Before starting any implementation, you MUST create a GitHub Issue with the foll
 -   **No Hallucinations:** If a tool fails, admit it. Do not invent file paths or API responses.
 
 ## 5. MCP Usage
--   Use `mcp_github_*` tools to manage issues and PRs.
--   Use `mcp_git_*` tools for committing changes with proper messages.
--   Use `mcp_gitkraken_*` tools for visual Git operations if needed.
--   Use `mcp_godot_*` tools (if available) or file operations to manage Godot assets.
+-   **Git Operations:**
+    -   ALWAYS use `mcp_git_*` tools (e.g., `mcp_git_git_status`, `mcp_git_git_add`, `mcp_git_git_commit`) for version control.
+    -   **Check Status First:** Before attempting to commit, ALWAYS run `mcp_git_git_status` (or `git status` via terminal if unavailable) to verify there are changes to commit.
+    -   **Commit Messages:** Use semantic commit messages referencing the Issue ID (e.g., `feat: add market button #6`).
+    -   Avoid `mcp_gitkraken_*` for basic git operations unless `mcp_git_*` fails.
+-   **GitHub Operations:**
+    -   Use `mcp_github_*` tools to manage issues.
+-   **Godot Operations:**
+    -   Use `mcp_godot_*` tools (if available) or file operations to manage Godot assets.
