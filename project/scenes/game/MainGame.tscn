@@ -1,8 +1,14 @@
 [gd_scene load_steps=2 format=3 uid="uid://game_main_scene"]
 
 [ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/screens/MainHUD.tscn" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://game_grid_manager" path="res://scenes/game/GridManager.tscn" id="2_grid_manager"]
 
 [node name="MainGame" type="Node2D"]
+
+[node name="GridManager" parent="." instance=ExtResource("2_grid_manager")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

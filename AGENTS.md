@@ -17,3 +17,20 @@ This repository follows a strict **Issue-Driven Development** workflow.
 2.  **Context Awareness:** Before answering, check which directory you are working in.
 3.  **Issue Linking:** Every commit MUST reference an Issue ID.
 
+## Development Workflow
+
+### Running the Game
+To run the game and see the console output (logs, errors, print statements):
+1.  **VS Code Task:** Run the task `Run Game` (Ctrl+Shift+B or Terminal -> Run Task...).
+2.  **Terminal:** Execute `godot --path project/ --verbose`.
+
+### Refreshing Assets (Headless)
+To force a re-import of assets (e.g., after creating files externally) without opening the GUI:
+1.  **VS Code Task:** Run the task `Refresh Assets`.
+2.  **Terminal:** Execute `godot --path project/ --headless --import`.
+
+### Opening the Editor
+To open the project in the Godot Editor:
+1.  **VS Code Task:** Run the task `Open Godot Editor`.
+2.  **Terminal:** Execute `godot --path project/ -e`.
+

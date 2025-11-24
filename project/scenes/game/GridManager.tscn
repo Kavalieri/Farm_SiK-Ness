@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://game_grid_manager"]
 
-[ext_resource type="Script" path="res://project/scripts/game/GridManager.gd" id="1_grid_manager"]
+[ext_resource type="Script" path="res://scripts/game/GridManager.gd" id="1_grid_manager"]
 
 [node name="GridManager" type="Node2D"]
 script = ExtResource("1_grid_manager")

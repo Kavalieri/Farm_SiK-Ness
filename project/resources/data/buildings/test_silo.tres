@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3 uid="uid://test_building_data"]
+
+[ext_resource type="Script" path="res://scripts/resources/BuildingData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b4d4d4d4d4d4" path="res://icon.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+id = "test_silo"
+name = "Test Silo"
+description = "A test building."
+texture = ExtResource("2_icon")
+shape_pattern = Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1)])
+base_production = 10.0
+cost = 50
+tags = Array[String]([])
