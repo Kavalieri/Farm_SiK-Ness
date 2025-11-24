@@ -48,6 +48,13 @@ Before starting any implementation, you MUST create a GitHub Issue with the foll
     -   **Commit Messages:** Use semantic commit messages referencing the Issue ID (e.g., `feat: add market button #6`).
     -   Avoid `mcp_gitkraken_*` for basic git operations unless `mcp_git_*` fails.
 -   **GitHub Operations:**
-    -   Use `mcp_github_*` tools to manage issues.
+    -   **Mandatory Usage:** Use `mcp_github_*` tools for ALL issue management (creation, commenting, listing).
+    -   **Detailed Issues:** When creating issues, provide comprehensive detail: Objective, Analysis, and Technical Implementation Plan (referencing specific files/classes).
+    -   **Detailed Comments:** Post detailed progress updates and conclusions.
+    -   **Closing Protocol:**
+        1.  Implement and Test.
+        2.  Post a "Conclusion" comment detailing exactly what was changed (files, logic) and the result.
+        3.  **WAIT** for user validation/approval.
+        4.  Close the issue only after explicit confirmation.
 -   **Godot Operations:**
     -   Use `mcp_godot_*` tools (if available) or file operations to manage Godot assets.
