@@ -19,10 +19,13 @@ func setup(data: BuildingData) -> void:
 	custom_minimum_size = Vector2(100, 120)
 	
 	# Apply background style
-	var bg_texture = load("res://assets/background/vertical.png")
+	var bg_texture = load("res://assets/tiles/1x1-tile.png")
 	if bg_texture:
 		var style = StyleBoxTexture.new()
 		style.texture = bg_texture
+		style.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+		style.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+		style.modulate_color = Color(0.8, 0.8, 0.8, 1.0)
 		add_theme_stylebox_override("normal", style)
 		add_theme_stylebox_override("hover", style)
 		add_theme_stylebox_override("pressed", style)

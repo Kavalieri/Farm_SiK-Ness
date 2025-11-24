@@ -18,10 +18,14 @@ func setup(data: BuildingData) -> void:
 	production_label.text = "Prod: %.1f/s" % data.base_production
 	
 	# Apply background style
-	var bg_texture = load("res://assets/background/vertical.png")
+	var bg_texture = load("res://assets/tiles/1x1-tile.png")
 	if bg_texture:
 		var style = StyleBoxTexture.new()
 		style.texture = bg_texture
+		style.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+		style.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+		# Add some modulation to make it darker/different if needed, but user just asked for the tile
+		style.modulate_color = Color(0.8, 0.8, 0.8, 1.0) # Slight dim to make content pop
 		add_theme_stylebox_override("panel", style)
 	
 	if not shape_display.resized.is_connected(_on_shape_display_resized):
