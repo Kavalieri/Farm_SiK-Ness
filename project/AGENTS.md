@@ -21,3 +21,21 @@ This directory contains the **Godot 4.5.1** game project.
 -   **No Magic Numbers:** Use `const` or `export var` for configurable values.
 -   **Update `AGENTS.md`** if new architectural patterns are introduced.
 
+## Adding New Content
+
+### 1. Adding a New Item (Resource)
+1.  Navigate to `resources/data/items/`.
+2.  Create a new Resource of type `ItemData`.
+3.  Set the `id` (unique string), `name`, `base_value`, and `weight`.
+4.  The game will automatically load it on startup via `GameManager`.
+
+### 2. Adding a New Building
+1.  Navigate to `resources/data/buildings/`.
+2.  Create a new Resource of type `BuildingData`.
+3.  Configure properties:
+    -   `id`: Unique identifier.
+    -   `custom_scene`: (Optional) Link to a `.tscn` if special logic is needed.
+    -   `produced_resource_id`: ID of the item it produces (if any).
+    -   `base_production`: Amount produced per cycle.
+4.  If custom logic is needed, create a script extending `BuildingEntity` and a scene inheriting `BuildingEntity.tscn`.
+

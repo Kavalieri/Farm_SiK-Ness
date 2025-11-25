@@ -56,9 +56,10 @@ func _show_no_rolls_message() -> void:
 	cards_container.add_child(label)
 
 func _on_card_selected(building_data: BuildingData) -> void:
-	GameManager.add_building_to_inventory(building_data)
+	var instance = BuildingInstance.new(building_data)
+	GameManager.add_building_to_inventory(instance)
 	# Auto-select for placement
-	GameManager.placing_building = building_data
+	GameManager.placing_building = instance
 	GameManager.clear_market_options()
 	print("Selected for placement: ", building_data.name)
 	close()

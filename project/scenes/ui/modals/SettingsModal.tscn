@@ -93,4 +93,9 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
-text = "Cerrar"
+text = "Volver al Juego"
+
+[node name="ExitButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Salir del Juego"

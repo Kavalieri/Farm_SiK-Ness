@@ -16,3 +16,13 @@ scale = Vector2(3, 3)
 unique_name_in_owner = true
 wait_time = 1.0
 autostart = true
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.5)
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+fill_mode = 3
+show_percentage = false
+

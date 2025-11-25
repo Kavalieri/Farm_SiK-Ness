@@ -17,10 +17,10 @@ func _ready() -> void:
 	building_inspector.return_requested.connect(_on_return_requested)
 	
 	grid_manager.building_selected.connect(_on_building_selected)
+	grid_manager.building_placed.connect(_on_building_placed)
 	
 	# Center camera on grid
-	var grid_center = (Vector2(grid_manager.grid_size) * Vector2(grid_manager.cell_size)) / 2.0
-	camera.position = grid_center
+	call_deferred("_center_camera")
 	
 	# Auto-load if requested
 	if SaveManager.load_on_start and SaveManager.current_slot != -1:
@@ -31,15 +31,29 @@ func _ready() -> void:
 		# Start new game
 		GameManager.start_new_game()
 
+func _center_camera() -> void:
+	var grid_size_px = Vector2(grid_manager.grid_size) * Vector2(grid_manager.cell_size)
+	var grid_center = grid_manager.position + (grid_size_px / 2.0)
+	camera.position = grid_center
+	print("Camera centered at: ", camera.position, " for grid size: ", grid_size_px)
+
 func _load_game() -> void:
 	SaveManager.load_game(SaveManager.current_slot)
 
 func _on_market_opened() -> void:
+	if GameManager.tutorial_step == 2:
+		GameManager.tutorial_step = 3
+		_update_tutorial_state()
+		
 	market_modal.open()
 	inventory_panel.close()
 	settings_modal.close()
 
 func _on_inventory_opened() -> void:
+	if GameManager.tutorial_step == 0:
+		GameManager.tutorial_step = 1
+		_update_tutorial_state()
+		
 	inventory_panel.open()
 	market_modal.close()
 	settings_modal.close()
@@ -55,7 +69,9 @@ func _on_return_requested(building_entity: Node2D) -> void:
 		# Create instance with current state
 		var level = building_entity.get("level") if building_entity.get("level") else 1
 		var xp = building_entity.get("xp") if building_entity.get("xp") else 0
-		var instance = BuildingInstance.new(building_entity.data, level, xp)
+		var variant = building_entity.get("selected_variant_index") if building_entity.get("selected_variant_index") else 0
+		
+		var instance = BuildingInstance.new(building_entity.data, level, xp, variant)
 		
 		# Add back to inventory
 		GameManager.add_building_to_inventory(instance)
@@ -87,3 +103,33 @@ func _on_building_selected(building: Node2D) -> void:
 			pass
 	else:
 		building_inspector.visible = false
+
+func _update_tutorial_state() -> void:
+	var step = GameManager.tutorial_step
+	
+	match step:
+		0: # Start: Force place Shipping Bin
+			main_hud.set_market_disabled(true)
+			main_hud.set_settings_disabled(true)
+			main_hud.highlight_inventory(true)
+			# Optional: Show a welcome message here if we had a dialog system
+		1: # Inventory opened, waiting for placement
+			main_hud.highlight_inventory(false)
+			# Still block market/settings
+			main_hud.set_market_disabled(true)
+			main_hud.set_settings_disabled(true)
+		2: # Shipping Bin placed: Unlock Market
+			main_hud.set_market_disabled(false)
+			main_hud.set_settings_disabled(false)
+			main_hud.highlight_market(true)
+		3: # Market opened: Tutorial complete
+			main_hud.highlight_market(false)
+			main_hud.set_market_disabled(false)
+			main_hud.set_settings_disabled(false)
+
+func _on_building_placed(building_data: Resource, _cell: Vector2i) -> void:
+	if GameManager.tutorial_step == 1:
+		if building_data.id == "shipping_bin":
+			GameManager.tutorial_step = 2
+			_update_tutorial_state()
+			# Show success message?

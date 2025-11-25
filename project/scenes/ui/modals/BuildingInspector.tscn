@@ -3,121 +3,177 @@
 [ext_resource type="Theme" uid="uid://theme_main_base" path="res://resources/themes/main_theme.tres" id="1_theme"]
 [ext_resource type="Script" path="res://scripts/ui/modals/BuildingInspector.gd" id="2_script"]
 
-[node name="BuildingInspector" type="PanelContainer"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="BuildingInspector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -300.0
-offset_top = -400.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 0
-grow_vertical = 0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_theme")
 script = ExtResource("2_script")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 10
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
 
-[node name="Header" type="HBoxContainer" parent="VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(340, 450)
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="VBoxContainer/Header"]
-custom_minimum_size = Vector2(64, 64)
+[node name="MainLayout" type="VBoxContainer" parent="CenterContainer/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Header" type="HBoxContainer" parent="CenterContainer/Panel/MainLayout"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="IconPanel" type="PanelContainer" parent="CenterContainer/Panel/MainLayout/Header"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/Panel/MainLayout/Header/IconPanel"]
+unique_name_in_owner = true
 layout_mode = 2
 expand_mode = 1
+stretch_mode = 5
 
-[node name="InfoBox" type="VBoxContainer" parent="VBoxContainer/Header"]
+[node name="TitleInfo" type="VBoxContainer" parent="CenterContainer/Panel/MainLayout/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
 
-[node name="NameLabel" type="Label" parent="VBoxContainer/Header/InfoBox"]
+[node name="NameLabel" type="Label" parent="CenterContainer/Panel/MainLayout/Header/TitleInfo"]
+unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "Building Name"
 
-[node name="LevelLabel" type="Label" parent="VBoxContainer/Header/InfoBox"]
+[node name="LevelLabel" type="Label" parent="CenterContainer/Panel/MainLayout/Header/TitleInfo"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Nivel 1"
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="TypeLabel" type="Label" parent="CenterContainer/Panel/MainLayout/Header/TitleInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "PRODUCER"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Panel/MainLayout"]
 layout_mode = 2
 
-[node name="DescriptionLabel" type="Label" parent="VBoxContainer"]
+[node name="ContentScroll" type="ScrollContainer" parent="CenterContainer/Panel/MainLayout"]
 layout_mode = 2
-text = "Description goes here."
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ContentVBox" type="VBoxContainer" parent="CenterContainer/Panel/MainLayout/ContentScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="DescriptionLabel" type="Label" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Description text goes here..."
 autowrap_mode = 3
 
-[node name="FlavorLabel" type="RichTextLabel" parent="VBoxContainer"]
+[node name="FlavorLabel" type="RichTextLabel" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 bbcode_enabled = true
 text = "[i]Flavor text...[/i]"
 fit_content = true
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="StatsContainer" type="VBoxContainer" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="StatsLabel" type="RichTextLabel" parent="VBoxContainer"]
+[node name="SectionHeader" type="Label" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox/StatsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Estadísticas"
+
+[node name="StatsLabel" type="RichTextLabel" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox/StatsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 bbcode_enabled = true
-text = "Producción: 10/s"
+text = "Stats..."
 fit_content = true
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+[node name="VariantSelector" type="OptionButton" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="SynergiesLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "Sinergias:"
-
-[node name="SynergiesContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="SynergiesContainer" type="VBoxContainer" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+[node name="SectionHeader" type="Label" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox/SynergiesContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Sinergias"
+
+[node name="SynergiesList" type="VBoxContainer" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox/SynergiesContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ActionsContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="SellContainer" type="VBoxContainer" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="SellInfoLabel" type="Label" parent="CenterContainer/Panel/MainLayout/ContentScroll/ContentVBox/SellContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Info..."
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/Panel/MainLayout"]
+layout_mode = 2
+
+[node name="Footer" type="HBoxContainer" parent="CenterContainer/Panel/MainLayout"]
 layout_mode = 2
 alignment = 1
-
-[node name="UpgradeButton" type="Button" parent="VBoxContainer/ActionsContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Mejorar ($100)"
-
-[node name="ReturnButton" type="Button" parent="VBoxContainer/ActionsContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Guardar"
-
-[node name="CloseButton" type="Button" parent="VBoxContainer/ActionsContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Cerrar"
-
-Sinergias: Ninguna"
-
-[node name="Actions" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="UpgradeButton" type="Button" parent="VBoxContainer/Actions"]
+[node name="ReturnButton" type="Button" parent="CenterContainer/Panel/MainLayout/Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Guardar"
+
+[node name="SellButton" type="Button" parent="CenterContainer/Panel/MainLayout/Footer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Vender"
+
+[node name="UpgradeButton" type="Button" parent="CenterContainer/Panel/MainLayout/Footer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Mejorar"
 
-[node name="MoveButton" type="Button" parent="VBoxContainer/Actions"]
+[node name="CloseButton" type="Button" parent="CenterContainer/Panel/MainLayout/Footer"]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-text = "Mover"
-
-[node name="SellButton" type="Button" parent="VBoxContainer/Actions"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
-text = "Vender"
+text = "Cerrar"

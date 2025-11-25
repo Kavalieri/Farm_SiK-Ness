@@ -10,15 +10,24 @@ func _ready() -> void:
 	load_all_buildings()
 
 func load_all_buildings() -> void:
+	available_buildings.clear()
 	var dir = DirAccess.open(BUILDINGS_PATH)
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if !dir.current_is_dir() and (file_name.ends_with(".tres") or file_name.ends_with(".res")):
-				var resource = load(BUILDINGS_PATH + file_name)
-				if resource is BuildingData:
-					available_buildings.append(resource)
+			# Handle .remap extension for exported builds
+			if !dir.current_is_dir():
+				var clean_name = file_name
+				if file_name.ends_with(".remap"):
+					clean_name = file_name.replace(".remap", "")
+				
+				if clean_name.ends_with(".tres") or clean_name.ends_with(".res"):
+					var resource = load(BUILDINGS_PATH + clean_name)
+					if resource is BuildingData:
+						# Only add if allowed in market pool
+						if resource.in_market_pool:
+							available_buildings.append(resource)
 			file_name = dir.get_next()
 	else:
 		push_error("Failed to open buildings directory: " + BUILDINGS_PATH)

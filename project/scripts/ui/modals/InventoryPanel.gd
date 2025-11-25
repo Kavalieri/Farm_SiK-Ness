@@ -50,8 +50,8 @@ func _on_slot_selected(building_instance: BuildingInstance) -> void:
 	print("Selected from inventory: ", building_instance.data.name)
 	close()
 
-func _on_slot_context_menu(building_data: BuildingData, pos: Vector2) -> void:
-	_selected_building_for_menu = building_data
+func _on_slot_context_menu(building_instance: BuildingInstance, pos: Vector2) -> void:
+	_selected_building_for_menu = building_instance
 	context_menu.position = Vector2i(pos)
 	context_menu.popup()
 
@@ -63,10 +63,10 @@ func _on_context_menu_id_pressed(id: int) -> void:
 		0: # Place
 			_on_slot_selected(_selected_building_for_menu)
 		1: # Details
-			print("Show details for: ", _selected_building_for_menu.name)
+			print("Show details for: ", _selected_building_for_menu.data.name)
 			# TODO: Open detail inspector
 		2: # Sell
-			print("Sell: ", _selected_building_for_menu.name)
+			print("Sell: ", _selected_building_for_menu.data.name)
 
 func _on_close_button_pressed() -> void:
 	close()

@@ -15,7 +15,23 @@ func setup(data: BuildingData) -> void:
 	building_data = data
 	name_label.text = data.name
 	cost_label.text = "Cost: %d" % data.cost
-	production_label.text = "Prod: %.1f/s" % data.base_production
+	
+	match data.type:
+		BuildingData.BuildingType.PRODUCER:
+			production_label.text = "Prod: %.1f/s" % data.base_production
+		BuildingData.BuildingType.PROCESSOR:
+			production_label.text = "Procesador"
+		BuildingData.BuildingType.STORAGE:
+			var storage = 0.0
+			if data.custom_stats.has("storage"):
+				storage = float(data.custom_stats["storage"])
+			production_label.text = "Almacén: +%.0f" % storage
+		BuildingData.BuildingType.SUPPORT:
+			production_label.text = "Soporte"
+		BuildingData.BuildingType.LOGISTICS:
+			production_label.text = "Logística"
+		_:
+			production_label.text = "Especial"
 	
 	# Apply background style
 	var bg_texture = load("res://assets/tiles/1x1-tile.png")

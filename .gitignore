@@ -8,3 +8,6 @@
 *.translation
 
 *.code-workspace
+
+# Builds
+build/

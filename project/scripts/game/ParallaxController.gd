@@ -3,13 +3,17 @@ extends ParallaxLayer
 @onready var sprite = $Background
 
 func _ready():
-	if sprite and sprite.texture:
-		var size = sprite.texture.get_size()
-		motion_mirroring = size
+	if sprite:
+		# Enable texture repeat for infinite tiling
+		sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+		# Set a massive region to ensure it covers any screen size
+		sprite.region_enabled = true
+		sprite.region_rect = Rect2(0, 0, 100000, 100000)
 		
-		# Ensure the sprite covers the viewport if it's too small?
-		# If the texture is small, we might need to scale it up or tile it manually.
-		# But assuming the texture is meant to be the background, let's just set mirroring.
-		
-		# Also, to prevent "seeing behind", we can add a ColorRect as a fallback
-		# But ParallaxBackground should handle it if mirroring is correct.
+		# Set mirroring to match the texture size (scaled)
+		# This resets the coordinate system periodically to prevent float precision issues
+		if sprite.texture:
+			motion_mirroring = sprite.texture.get_size() * sprite.scale
+
+
+

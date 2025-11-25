@@ -7,15 +7,39 @@
 script = ExtResource("1_script")
 id = "farmland"
 name = "Farmland"
+type = 0
 description = "Basic crop land. Needs water to grow efficiently."
 texture = ExtResource("2_icon")
 shape_pattern = Array[Vector2i]([Vector2i(0, 0)])
-base_production = 5.0
+base_production = 1.0
+production_interval = 5.0
+production_variants = Array[Dictionary]([{
+"icon": ExtResource("2_icon"),
+"interval": 5.0,
+"name": "Trigo",
+"production": 1.0,
+"unlock_level": 1,
+"resource_id": "wheat"
+}, {
+"icon": ExtResource("2_icon"),
+"interval": 8.0,
+"name": "Maíz",
+"production": 2.0,
+"unlock_level": 2,
+"resource_id": "corn"
+}, {
+"icon": ExtResource("2_icon"),
+"interval": 12.0,
+"name": "Calabaza",
+"production": 3.0,
+"unlock_level": 3,
+"resource_id": "pumpkin"
+}])
 cost = 50
 rarity = 0
 spawn_weight = 1.0
 tags = Array[String](["crop"])
 synergy_rules = {
-"water": 0.5,
-"silo": 0.2
+"water:speed": 0.2,
+"processing:value": 1.0
 }

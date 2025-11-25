@@ -2,19 +2,29 @@
 
 [ext_resource type="Script" path="res://scripts/resources/BuildingData.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/pieces/2x1-silo.png" id="2_icon"]
+[ext_resource type="PackedScene" path="res://scenes/game/Silo.tscn" id="3_scene"]
 
 [resource]
 script = ExtResource("1_script")
 id = "silo"
 name = "Silo"
+type = 2
 description = "Stores crops. Boosts adjacent farmlands."
 texture = ExtResource("2_icon")
+custom_scene = ExtResource("3_scene")
 shape_pattern = Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1)])
-base_production = 10.0
+base_production = 0.0
 cost = 200
 rarity = 1
 spawn_weight = 0.6
 tags = Array[String](["storage"])
+synergy_rules = {
+"crop": 0.1
+}
+custom_stats = {
+"storage": 50.0
+}
+custom_scene = ExtResource("3_scene")"storage"])
 synergy_rules = {
 "crop": 0.1
 }

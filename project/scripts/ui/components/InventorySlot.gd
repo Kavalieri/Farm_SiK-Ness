@@ -146,3 +146,49 @@ func _on_gui_input(event: InputEvent) -> void:
 			if building_instance:
 				context_menu_requested.emit(building_instance, get_global_mouse_position())
 
+func _get_drag_data(at_position: Vector2) -> Variant:
+	if not building_instance:
+		return null
+		
+	var preview = Button.new()
+	preview.text = building_instance.data.name
+	preview.icon = building_instance.data.texture
+	preview.expand_icon = true
+	preview.custom_minimum_size = Vector2(64, 64)
+	preview.modulate.a = 0.8
+	set_drag_preview(preview)
+	
+	return {
+		"type": "merge_building",
+		"instance": building_instance,
+		"source_slot": self
+	}
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	if typeof(data) != TYPE_DICTIONARY or not data.has("type") or data.type != "merge_building":
+		return false
+		
+	var source_instance = data.instance
+	
+	# Cannot merge with self
+	if source_instance == building_instance:
+		return false
+		
+	# Must be same ID
+	if source_instance.data.id != building_instance.data.id:
+		return false
+		
+	# Must be same level
+	if source_instance.level != building_instance.level:
+		return false
+		
+	# Must not be max level
+	if building_instance.level >= building_instance.data.max_level:
+		return false
+		
+	return true
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	var source_instance = data.instance
+	GameManager.merge_buildings(source_instance, building_instance)
+
